@@ -12,9 +12,11 @@ Values:any;
 
    }
 
+  
   ngOnInit() {
     this.getValues();
   }
+  
   getValues()
   {
 this.http.get('https://localhost:44350/api/Values').subscribe(response => {

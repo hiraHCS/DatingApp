@@ -1,0 +1,12 @@
+.dropdown-toggle .dropdown-item{
+    cursor: pointer;
+}
+.dropdown{
+    color: black;
+    text-decoration: none;
+}
+a:hover {
+    
+    text-decoration: black;
+    background-color: transparent;
+}
