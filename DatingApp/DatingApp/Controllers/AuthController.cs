@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.Data;
 using DatingApp.Dtos;
 using DatingApp.Models;
@@ -24,10 +25,12 @@ namespace DatingApp.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepository repo,IConfiguration config )
+        private readonly IMapper _mapper;
+        public AuthController(IAuthRepository repo,IConfiguration config  ,IMapper mapper)
         {
             _repo = repo;
             _config = config;
+            _mapper = mapper;
         }
         [HttpPost("register")]
         public async Task<IActionResult>Register(userForRegisterDto userForRegisterDto)
@@ -60,6 +63,7 @@ namespace DatingApp.Controllers
                     new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
                     new Claim(ClaimTypes.Name,userFromRepo.Username)
 
+                    
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8
@@ -75,7 +79,12 @@ namespace DatingApp.Controllers
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                return Ok(new { token = tokenHandler.WriteToken(token) });
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
+
+            return Ok(new {
+                    token = tokenHandler.WriteToken(token),
+                    user = user
+                }); ;
           
             //throw new Exception("Computer says no");
 

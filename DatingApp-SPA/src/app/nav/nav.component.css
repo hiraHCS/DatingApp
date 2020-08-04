@@ -10,3 +10,8 @@ a:hover {
     text-decoration: black;
     background-color: transparent;
 }
+img{
+    max-height: 50px;
+    border: 2px solid white;
+    display: inline;
+}

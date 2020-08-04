@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_Services/auth.service';
 import { error } from '@angular/compiler/src/util';
-
 import { from } from 'rxjs';
 import { AlertifyService } from '../_Services/alertify.service';
 import { Router } from '@angular/router';
@@ -13,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
   model: any = {};
+  photoUrl:string;
 
   constructor(
     public authService: AuthService,
@@ -22,6 +22,7 @@ export class NavComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   ngOnInit() {
+    this.authService.currentphotoUrl.subscribe(photoUrl=>this.photoUrl=photoUrl);
     // tslint:disable-next-line: no-debugger
   }
   // tslint:disable-next-line: typedef
@@ -49,6 +50,10 @@ export class NavComponent implements OnInit {
   }
   loggedout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    this.authService.decodedToken=null;
+    this.authService.currentuser=null;
     this.alertify.message('Logged out');
     this.router.navigate(['home']);
   }
