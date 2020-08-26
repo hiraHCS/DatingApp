@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/_models/user';
+import { UserService } from 'src/app/_Services/user.service';
+import { AlertifyService } from 'src/app/_Services/alertify.service';
 
 @Component({
   selector: 'app-member-card',
@@ -9,7 +11,8 @@ import { User } from 'src/app/_models/user';
 export class MemberCardComponent implements OnInit {
   @Input() user: User;
 
-  constructor() {}
+  constructor(private userService:UserService,private alertify :AlertifyService ) {}
 
   ngOnInit() {}
+
 }

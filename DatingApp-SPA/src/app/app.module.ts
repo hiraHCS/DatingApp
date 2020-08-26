@@ -3,18 +3,22 @@ import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TimeagoModule } from 'ngx-timeago';
+
 
 
 import { AppComponent } from './app.component';
 import {ErrorInterceptorProvider} from './_Services/error.interceptor';
 import { NavComponent } from './nav/nav.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './_Services/auth.service';
 import {MemberListComponent} from './members/member-list/member-list.component';
 import {MemberCardComponent} from './members/member-card/member-card.component';
@@ -30,11 +34,9 @@ import { AlertifyService } from './_Services/alertify.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { UserService } from './_Services/user.service';
-
 import{MemberDetailResolver} from './_resolvers/member-detail.resolver';
-
-import {MemberEditResolver} from  './_resolvers/member-edit.resolver';
-import {MemberlistResolver} from './_resolvers/member-list.resolver';
+import {MemberEditResolver}  from  './_resolvers/member-edit.resolver';
+import {MemberlistResolver} from  './_resolvers/member-list.resolver';
 
 
 //import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -55,7 +57,8 @@ export function tokenGetter()
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+    
      // MemberEditComponent
      
      
@@ -63,13 +66,18 @@ export function tokenGetter()
    imports: [
   
       BrowserModule,
+      BrowserAnimationsModule,
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
+      ReactiveFormsModule,
       BrowserAnimationsModule,
       NgxGalleryModule,
       FileUploadModule,
+      PaginationModule.forRoot(),
       BsDropdownModule.forRoot(),
+      BsDatepickerModule.forRoot(),
+      TimeagoModule.forRoot(),
       TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
             JwtModule.forRoot({config: {
