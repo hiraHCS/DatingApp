@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp.Helpers;
 using AutoMapper;
+using DatingApp.SignalR;
 
 namespace DatingApp
 {
@@ -53,16 +54,39 @@ namespace DatingApp
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
+
          .AddJwtBearer(options =>
-         options.TokenValidationParameters = new TokenValidationParameters
          {
-             ValidateIssuerSigningKey = true,
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-             .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-             ValidateIssuer = false,
-             ValidateAudience=false,
-         });
+             options.TokenValidationParameters = new TokenValidationParameters
+             {
+                 ValidateIssuerSigningKey = true,
+                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+                 .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                 ValidateIssuer = false,
+                 ValidateAudience = false,
+             };
+             options.Events = new JwtBearerEvents
+             {
+                 OnMessageReceived = context =>
+                   {
+                       var accessToken = context.Request.Query["access_token"];
+                       var path = context.HttpContext.Request.Path;
+                       if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs")) 
+                       {
+                           context.Token = accessToken;
+                       }
+                       return Task.CompletedTask;
+                   }
+             };
+
+
+         }) ;
             services.AddScoped<LogUserActivity>();
+            services.AddSingleton<PresenceTracker>();
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,7 +133,11 @@ namespace DatingApp
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.AllowAnyHeader()
+            .AllowAnyMethod()
+            // For signalr
+            .AllowCredentials()
+            .WithOrigins("http://localhost:4200"));
             
             app.UseAuthentication();
 
@@ -119,6 +147,8 @@ namespace DatingApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
             });
         }
     }

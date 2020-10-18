@@ -5,6 +5,7 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 import {BehaviorSubject} from 'rxjs';
+import { PresenceService } from './presence.service';
 
 
 @Injectable({
@@ -21,7 +22,7 @@ photoUrl=new BehaviorSubject<string>('../assets/user.jpg');
 
 currentphotoUrl=this.photoUrl.asObservable();
 
-constructor(private http: HttpClient) { }
+constructor(private http: HttpClient,private presence:PresenceService ) { }
 
 changeMemberPhoto (photoUrl: string)
 {
@@ -43,21 +44,42 @@ return this.http.post(this.baseUrl + 'Login', model)
       // console.log(this.decodedToken);
       this.changeMemberPhoto(this.currentuser.photoUrl);
 
+     
+      this.presence.createHubConnection(user.user);
 
     }
+   
   })
 )
 
 }
-register (user:User)
+register (user: User)
 {
-  return this.http.post(this.baseUrl + 'register', user);
+  return this.http.post(this.baseUrl + 'register', user)
+  .pipe
+  (
+  map((user:User)=>
+  {
+  this.currentuser=user;
+  this.presence.createHubConnection(user);
+  })
+  )
 }
 loggedIn()
 {
+
   const token =localStorage.getItem('token');
   return !this.jwtHelper.isTokenExpired(token);
+  
 
+}
+loggedOut()
+{
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  this.decodedToken = null;
+  this.currentuser = null;
+  this.presence.stopHubConnection();
 }
 
 }

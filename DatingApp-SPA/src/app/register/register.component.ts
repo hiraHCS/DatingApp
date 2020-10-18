@@ -67,7 +67,8 @@ return g.get('password').value===g.get('confirmPassword').value ? null : { 'mism
 this.user=Object.assign({},this.registerForm.value);
 this.authService.register(this.user).subscribe(() =>
 {
-  this.alertify.success('Registration successfull')
+  //this.alertify.success('Registration successfull')
+ 
 }, error =>
 {
 this.alertify.error('error');

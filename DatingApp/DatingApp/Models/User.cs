@@ -25,5 +25,13 @@ namespace DatingApp.Models
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
+
+        public ICollection<Like> Likers { get; set; }
+        public ICollection<Like> Likees { get; set; }
+
+        public ICollection<Message> MessageSent { get; set; }
+        public ICollection<Message> MessageReceived { get; set; }
+
+
     }
 }

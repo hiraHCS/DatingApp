@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>ee220d7d-9d84-48b0-8f1f-bd9bafc6ab67</UserSecretsId>
+	  <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20200715120122_TestEntity.cs" />
@@ -17,6 +18,12 @@
     <Compile Remove="Migrations\20200823065046_soumya.Designer.cs" />
     <Compile Remove="Migrations\20200823065458_myproperty.cs" />
     <Compile Remove="Migrations\20200823065458_myproperty.Designer.cs" />
+    <Compile Remove="Migrations\20200914065013_abc.cs" />
+    <Compile Remove="Migrations\20200914065013_abc.Designer.cs" />
+    <Compile Remove="Migrations\20200914072743_a.cs" />
+    <Compile Remove="Migrations\20200914072743_a.Designer.cs" />
+    <Compile Remove="Migrations\20200918002131_test.cs" />
+    <Compile Remove="Migrations\20200918002131_test.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
@@ -24,6 +31,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
